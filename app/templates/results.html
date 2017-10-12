@@ -1,11 +1,6 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Prediction</title>
-     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
-  </head>
-  <body>
-
+{% extends "layout.html" %}
+{% block title %}Prediction{% endblock %}
+{% block content %}
   <h4>&nbsp; &nbsp;The prediction wether the number of steps is met:</h4>
   <dl>
   <div>&nbsp; &nbsp;{{ content1 }}</div>
@@ -17,6 +12,4 @@
  <h4>&nbsp; &nbsp;Prediction:</h4>
  <div>&nbsp; &nbsp;The prediction for this date is <strong>{{ prediction }}</strong></div>
  <div>&nbsp; &nbsp;(probability: {{ probability }}%).</div>
-
-   </body>
-  </html>
+{% endblock %}
