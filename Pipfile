@@ -1,5 +1,6 @@
 [packages]
-flask = "*"
+Flask = "*"
+gunicorn = "*"
 wtforms = "*"
 numpy = "*"
 sklearn = "*"
