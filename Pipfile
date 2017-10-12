@@ -1,5 +1,5 @@
 [packages]
-Flask = "*"
+flask = "*"
 gunicorn = "*"
 wtforms = "*"
 numpy = "*"
