@@ -1,0 +1,10 @@
+{
+  "name": "Personalized Coaching demo Application",
+  "description": "A coaching application to provide personalized feedback on fitbit data.",
+  "image": "heroku/python",
+  "repository": "https://github.com/compsy/personalized-coaching",
+  "keywords": ["python", "flask" ],
+  "addons": [ ],
+  "environments": {
+  }
+}
