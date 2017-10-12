@@ -30,16 +30,15 @@ def classify(treatment_id,day,hour,steps_hour,steps_total):
     except (FileNotFoundError, ValueError, EOFError, UnpicklingError):
         return 'no data found', 0
 
+def get_pickle_files():
+    return [(f[0:4], f[0:4]) for f in listdir(pickle_dir) if isfile(join(pickle_dir, f))]
+
 class DataForm(Form):
-    pickle_files = [(f[0:4], f[0:4]) for f in listdir(pickle_dir) if isfile(join(pickle_dir, f))]
+    pickle_files = get_pickle_files()
     treatment_id = SelectField("Treatmentid",
                                 choices = pickle_files,
                                 validators = [validators.DataRequired(),
                                 validators.length(min=1)])
-
-    # treatment_id = TextField("Treatment id", 
-                            # [validators.DataRequired(),
-                             # validators.length(min=1)])
     day = TextField("Day", [validators.DataRequired(),
                             validators.length(min=1)])
     hour = TextField("Hour", [validators.DataRequired(),
@@ -53,6 +52,7 @@ class DataForm(Form):
 @app.route('/')
 def index():
     form = DataForm(request.form)
+    # return jsonify(treatment_id=get_pickle_files())
     return render_template('testdata.html', form=form)
 
 @app.route('/results', methods=['POST'])
