@@ -1,0 +1,9 @@
+[packages]
+flask = "*"
+wtforms = "*"
+numpy = "*"
+sklearn = "*"
+scipy = "*"
+
+[requires]
+python_version = "3.6"
