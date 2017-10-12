@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+<title>Enter candidate </title>
+<link rel="stylesheet" href="{{url_for('static',filename='style.css') }}">
+</head>
+  <body>
+
+<h4>&nbsp; &nbsp;Please enter treatment id, day, hour, steps hour, steps total to predict if the number of steps is going to be met:</h4>
+
+    {% from "_formhelpers.html" import render_field %}
+
+<form method=post action="/results">
+
+  <dl>
+  {{ render_field(form.treatment_id, cols='1', rows='1')}}
+  {{ render_field(form.day, cols='1', rows='1') }}
+  {{ render_field(form.hour, cols='1', rows='1') }}
+  {{ render_field(form.steps_hour, cols='1', rows='1')}}
+  {{ render_field(form.steps_total, cols='1', rows='1')}}
+  </dl>
+  <div>&nbsp; &nbsp;
+    <input type=submit value='Predict' name='predict_btn'>
+  </div>
+</form>
+
+ </body>
+</html>
