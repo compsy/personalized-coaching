@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify
 from wtforms import Form, TextAreaField, TextField, SelectField, validators
 from pickle import UnpicklingError
 import pickle
-import sqlite3
 import os
 from os import listdir
 from os.path import isfile, join
@@ -31,14 +30,6 @@ def classify(treatment_id,day,hour,steps_hour,steps_total):
     except (FileNotFoundError, ValueError, EOFError, UnpicklingError):
         return 'no data found', 0
 
-#def sqlite_entry(path, week,day,hour,y):
-#    conn = sqlite3.connect(path)
-#    c = conn.cursor()
-#    c.execute("INSERT INTO prediction_asked (treatment_id,day,hour,steps_hour,steps_total,date)" "VALUES (?,?,? DATETIME('now'))", (treatment_id,day,hour,steps_hour,steps_total))
-#    conn.commit()
-#    conn.close()
-
-app = Flask(__name__)
 class DataForm(Form):
     pickle_files = [(f[0:4], f[0:4]) for f in listdir(pickle_dir) if isfile(join(pickle_dir, f))]
     treatment_id = SelectField("Treatmentid",
@@ -53,13 +44,11 @@ class DataForm(Form):
                             validators.length(min=1)])
     hour = TextField("Hour", [validators.DataRequired(),
                              validators.length(min=1)])
-    steps_hour =  TextField("Stepsperhour", [validators.DataRequired(),
+    steps_hour =  TextField("Steps per hour", [validators.DataRequired(),
                              validators.length(min=1)])
-    steps_total = TextField("Stepsintotal",
+    steps_total = TextField("Steps in total",
                             [validators.DataRequired(),
                              validators.length(min=1)])
-
-
 
 @app.route('/')
 def index():
@@ -89,21 +78,6 @@ def results():
                                 prediction=y,
                                 probability=round(proba*100, 2))
     return render_template('testdata.html', form=form)
-
-@app.route('/thanks', methods=['POST'])
-
-def result():
-    result = request.form['result_button']
-    review = request.form['review']
-    prediction = request.form['prediction']
-
-    inv_label = {'negative': 0, 'positive': 1}
-    y = inv_label[prediction]
-    if feedback == 'Incorrect':
-        y = int(not(y))
-     #train(review, y)
-    sqlite_entry(db, treatment_id,day,hour,steps_hour,steps_total, y)
-    return render_template('thanks.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
