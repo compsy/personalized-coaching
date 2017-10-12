@@ -1,0 +1,6 @@
+Flask
+gunicorn
+wtforms
+numpy
+sklearn
+scipy
