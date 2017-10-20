@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
 from wtforms import Form, TextAreaField, TextField, SelectField, validators
 from pickle import UnpicklingError
 import pickle
@@ -10,10 +11,14 @@ import sklearn
 # import HashingVectorizer from local dir
 #from vectorizer import vect
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+from models import Metric
 
 ######## Preparing the Classifier
 cur_dir = os.path.dirname(__file__)
-db = os.path.join(cur_dir, 'fitbitwebdata.sqlite')
 app.static_folder = 'static'
 pickle_dir = os.path.join(cur_dir,'pkl_objects')
 

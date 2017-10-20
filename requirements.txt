@@ -1,6 +1,12 @@
 Flask
+flask-sqlalchemy
+flask_script
+flask_migrate
+flask_sqlalchemy
 gunicorn
 wtforms
 numpy
 sklearn
 scipy
+psycopg2
+
