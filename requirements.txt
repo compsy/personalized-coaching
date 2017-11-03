@@ -3,6 +3,7 @@ flask-sqlalchemy
 flask_script
 flask_migrate
 flask_sqlalchemy
+flask_cors
 gunicorn
 wtforms
 numpy

@@ -1,0 +1,20 @@
+{
+  "name": "personalized-coacing",
+  "version": "0.0.0",
+  "homepage": "https://github.com/compsy/personalized-coaching",
+  "authors": [
+    "Frank Blaauw <f.j.blaauw@rug.nl>",
+    "Talko Dijkhuis <>"
+  ],
+  "description": "PoC application to demonstrate the personalized coaching using wearable data",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}

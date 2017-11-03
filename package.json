@@ -1,0 +1,38 @@
+{
+  "name": "personalized-coaching",
+  "version": "1.0.0",
+  "description": "Instal reqs ``` pip install -r requirements.txt ```",
+  "main": "App.js",
+  "dependencies": {
+    "axios": "^0.17.0",
+    "react": "15.6.2",
+    "react-dom": "15.6.2",
+    "react-materialize": "^1.0.16"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.47",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "bower": "^1.8.2",
+    "graceful-fs": "^4.1.11",
+    "html-webpack-plugin": "^2.30.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/compsy/personalized-coaching.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/compsy/personalized-coaching/issues"
+  },
+  "homepage": "https://github.com/compsy/personalized-coaching#readme"
+}
