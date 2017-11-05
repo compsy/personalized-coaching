@@ -32856,36 +32856,38 @@ var UserInput = function (_Component) {
     _this.state = {
       participants: undefined,
       user_data: undefined,
-      user_id: undefined,
+      user_id: '1119',
       results: undefined
     };
     return _this;
   }
 
   _createClass(UserInput, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
+    key: 'queryUserDetails',
+    value: function queryUserDetails() {
       var _this2 = this;
 
-      _axios2.default.get('http://localhost:5000/participants').then(function (response) {
-        return _this2.setState({ participants: response.data });
-      });
-
-      this.setState({ user_id: '1119' });
-      _axios2.default.get('http://localhost:5000/details?user_id=1119').then(function (response) {
+      var user_id = this.state.user_id;
+      _axios2.default.get('http://hanze.compsy.nl' + '/details?user_id=' + user_id).then(function (response) {
         return _this2.setState({ user_details: response.data });
       });
     }
   }, {
-    key: 'handleParticipantChanged',
-    value: function handleParticipantChanged(e) {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       var _this3 = this;
 
+      _axios2.default.get('http://hanze.compsy.nl' + '/participants').then(function (response) {
+        return _this3.setState({ participants: response.data });
+      });
+      this.queryUserDetails();
+    }
+  }, {
+    key: 'handleParticipantChanged',
+    value: function handleParticipantChanged(e) {
       var user_id = e.target.value;
       this.setState({ user_id: user_id });
-      _axios2.default.get('http://localhost:5000/details?user_id=' + user_id).then(function (response) {
-        return _this3.setState({ user_details: response.data });
-      });
+      this.queryUserDetails();
     }
   }, {
     key: 'handleResultCalculated',
