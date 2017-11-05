@@ -47,7 +47,7 @@ export default class UserInput extends Component {
       <div className='row'>
         <p>Complete the form to receive an estimate whether or not the selected participant will reach his or her goal today.</p>
         <div className='col s12 l6'>
-          <FieldComponent field_id='treatment_id' field_label='Treatment ID' options={this.state.participants} handlerFunction={this.handleParticipantChanged.bind(this)}/>
+          <FieldComponent field_id='treatment_id' field_label='Treatment ID' selected={this.state.user_id} options={this.state.participants} handlerFunction={this.handleParticipantChanged.bind(this)}/>
           <AlgorithmComponent user_id={this.state.user_id} user_details={this.state.user_details} handleResultCalculated={this.handleResultCalculated.bind(this)}/>
         </div>
         <div className='col s12 l6'>

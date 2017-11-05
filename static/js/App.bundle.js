@@ -21989,36 +21989,45 @@ var FieldComponent = function (_React$Component) {
           option
         );
       });
+      selectorOptions.unshift(_react2.default.createElement(
+        'option',
+        { key: 'def', value: 'def', disabled: true },
+        'Choose your option'
+      ));
 
       return selectorOptions;
     }
   }, {
+    key: 'updateSelected',
+    value: function updateSelected(props) {
+      var selected = props.selected === undefined ? 'def' : props.selected;
+      this.setState({
+        selected: selected
+      });
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      this.updateSelected(props);
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var selected = this.props.selected === undefined ? 'def' : this.props.selected;
+      this.updateSelected(this.props);
       this.setState({
-        options: this.props.options,
-        selected: selected
+        options: this.props.options
       });
     }
   }, {
     key: 'render',
     value: function render() {
       var options = this.generateSelect(this.state.options);
-      options.unshift(_react2.default.createElement(
-        'option',
-        { key: 'def', value: 'def', disabled: true },
-        'Choose your option'
-      ));
-      console.log(this.state.selected);
       return _react2.default.createElement(
         _reactMaterialize.Row,
         null,
         _react2.default.createElement(
           _reactMaterialize.Input,
-          { type: 'select',
-            label: this.props.field_label,
-            defaultValue: this.state.selected,
+          { type: 'select', label: this.props.field_label, value: this.state.selected,
             onChange: this.props.handlerFunction },
           options
         )
@@ -32897,7 +32906,7 @@ var UserInput = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'col s12 l6' },
-          _react2.default.createElement(_FieldComponent2.default, { field_id: 'treatment_id', field_label: 'Treatment ID', options: this.state.participants, handlerFunction: this.handleParticipantChanged.bind(this) }),
+          _react2.default.createElement(_FieldComponent2.default, { field_id: 'treatment_id', field_label: 'Treatment ID', selected: this.state.user_id, options: this.state.participants, handlerFunction: this.handleParticipantChanged.bind(this) }),
           _react2.default.createElement(_AlgorithmComponent2.default, { user_id: this.state.user_id, user_details: this.state.user_details, handleResultCalculated: this.handleResultCalculated.bind(this) })
         ),
         _react2.default.createElement(
@@ -48532,7 +48541,6 @@ var AlgorithmComponent = function (_React$Component) {
     value: function updateAlgorithmSelection(user_details) {
       // Inefficient, but clean
       if (user_details != undefined) {
-        console.log(user_details);
         var algo_f1 = user_details.reduce(function (prev, curr) {
           return prev.f1_score > curr.f1_score ? prev : curr;
         });

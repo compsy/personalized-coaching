@@ -137,7 +137,6 @@ export default class AlgorithmComponent extends React.Component {
   updateAlgorithmSelection(user_details) {
     // Inefficient, but clean
     if(user_details != undefined) {
-      console.log(user_details)
       let algo_f1 = user_details.reduce(function(prev, curr) { return prev.f1_score > curr.f1_score ? prev : curr; });
       let algo_acc = user_details.reduce(function(prev, curr) { return prev.accuracy > curr.accuracy ? prev : curr; });
       this.setState({

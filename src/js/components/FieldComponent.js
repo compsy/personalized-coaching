@@ -17,27 +17,34 @@ export default class FieldComponent extends React.Component {
         <option key={option}>{option}</option>
       )
     })
+    selectorOptions.unshift(<option key="def" value="def" disabled>Choose your option</option>)
 
     return(selectorOptions)
   }
 
+  updateSelected(props) {
+    let selected = props.selected === undefined ? 'def' : props.selected;
+    this.setState({
+      selected: selected
+    })
+  }
+
+  componentWillReceiveProps(props) {
+    this.updateSelected(props);
+  }
+
   componentDidMount() {
-    let selected = this.props.selected === undefined ? 'def' : this.props.selected;
+    this.updateSelected(this.props);
     this.setState({
       options: this.props.options,
-      selected: selected
     })
   }
 
   render() {
     let options = this.generateSelect(this.state.options);
-    options.unshift(<option key="def" value="def" disabled>Choose your option</option>)
-    console.log(this.state.selected);
     return (
       <Row>
-        <Input type='select' 
-               label={this.props.field_label} 
-               defaultValue={this.state.selected} 
+        <Input type='select' label={this.props.field_label} value={this.state.selected} 
                onChange={this.props.handlerFunction}>
           {options}
         </Input>
