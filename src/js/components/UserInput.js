@@ -12,25 +12,27 @@ export default class UserInput extends Component {
     this.state = {
       participants: undefined,
       user_data: undefined,
-      user_id: undefined,
+      user_id: '1119',
       results: undefined,
     };
   }
 
-  componentDidMount() {
-    axios.get('http://localhost:5000/participants')
-      .then(response => this.setState({participants: response.data}))
-
-    this.setState({user_id: '1119'})
-    axios.get('http://localhost:5000/details?user_id=1119')
+  queryUserDetails() {
+    let user_id = this.state.user_id
+    axios.get(__SITE_URL__ + '/details?user_id=' + user_id)
       .then(response => this.setState({user_details: response.data}))
+  }
+
+  componentDidMount() {
+    axios.get(__SITE_URL__ + '/participants')
+      .then(response => this.setState({participants: response.data}))
+    this.queryUserDetails()
   } 
 
   handleParticipantChanged(e) {
     let user_id = e.target.value;
     this.setState({user_id: user_id})
-    axios.get('http://localhost:5000/details?user_id=' + user_id)
-      .then(response => this.setState({user_details: response.data}))
+    this.queryUserDetails()
   }
 
   handleResultCalculated(result) {

@@ -2,10 +2,11 @@
 // https://nodejs.org/api/path.html
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 
 // Constant with our paths
 const paths = {
-  DIST: path.resolve(__dirname, 'static/scripts/js'),
+  DIST: path.resolve(__dirname),
   SRC: path.resolve(__dirname, 'src'),
   JS: path.resolve(__dirname, 'src/js')
 };
@@ -15,11 +16,16 @@ module.exports = {
   entry: path.join(paths.JS, 'App.js'),
   output: {
     path: paths.DIST,
-    filename: 'App.bundle.js'
+    filename: 'static/js/App.bundle.js'
   },
   plugins: [
     new HtmlWebpackPlugin({
+      inject: true,
       template: path.join(paths.SRC, 'index.html'),
+      filename: 'templates/index.html'
+    }),
+    new webpack.DefinePlugin({
+      __SITE_URL__: "'http://hanze.compsy.nl'"
     }),
   ],
   module: {
