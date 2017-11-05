@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Input } from 'react-materialize';
+import { ProgressBar, Row, Input } from 'react-materialize';
 import { render } from 'react-dom';
+import axios from 'axios';
 import FieldComponent from './FieldComponent.js'
 
 export default class AlgorithmComponent extends React.Component {
@@ -26,7 +27,6 @@ export default class AlgorithmComponent extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log(props)
     this.updateAlgorithmSelection(props.user_details)
   }
 
@@ -41,7 +41,7 @@ export default class AlgorithmComponent extends React.Component {
 
   onOptionChange(e) {
     this.setState({
-      selectorOption: e.target.value
+      selectedOption: e.target.value
     });
   }
   onLastHourStepsChange(e) {
@@ -54,11 +54,13 @@ export default class AlgorithmComponent extends React.Component {
       totalSteps: e.target.value
     });
   }
+
   onDayChange(e) {
     this.setState({
       day: e.target.value
     });
   }
+
   onHourChange(e) {
     this.setState({
       hour: e.target.value
@@ -66,8 +68,7 @@ export default class AlgorithmComponent extends React.Component {
   }
 
   submitField() {
-    console.log(this.props)
-    axios.post('http://localhost:5000/calculate', {
+    axios.post(__SITE_URL__ + '/calculate', {
       treatment_id: this.props.user_id,
       day: this.state.day,
       hour: this.state.hour,
@@ -77,12 +78,6 @@ export default class AlgorithmComponent extends React.Component {
     }).then(response => this.props.handleResultCalculated(response.data))
   }
 
-  createSubmit() {
-    return(<Row>
-      <Input type='submit' className='btn' onClick={this.submitField.bind(this)}/>
-    </Row>)
-  }
-
   toggleAdvanced() {
     let adv = this.state.showAdvanced
     this.setState({showAdvanced: !adv})
@@ -90,7 +85,6 @@ export default class AlgorithmComponent extends React.Component {
 
   onAlgorithmChanged(e) {
     // Force the new algorithm
-    console.log('Changing algorithm!');
     this.setState({
       algo_f1: e.target.value,
       algo_acc: e.target.value
@@ -98,28 +92,42 @@ export default class AlgorithmComponent extends React.Component {
   }
 
   getAlgorithmOptions(user_details) {
-    console.log(this);
-    console.log(user_details);
     if(user_details != undefined) {
       return(user_details.map((entry) => entry.algorithm));
     }
   }
 
   bestAlgo() {
-    console.log('best' + this.state.algo_f1);
     if(this.state.selectedOption === 'f1')
       return this.state.algo_f1
     return this.state.algo_acc
+  }
+
+  createSelect(id, label, defaultVal, data, callback, useIndex) {
+    var key;
+    data = data.map( (entry, index) => {
+      key = useIndex ? index : entry
+      return (
+        <option value={key} key={key}>{entry}</option>
+      )
+    });
+    return(
+      <Input type='select' id={id} label={label}
+              defaultValue={defaultVal} 
+              onChange={callback}>
+        {data}
+      </Input>
+    )
   }
 
   renderAdvancedOptions(user_details) {
     return(
       <div>
     <Row>
-      <Input id='day' s={6} label='Current day' defaultValue={this.state.day} onChange={this.onDayChange.bind(this)} />
+      {this.createSelect('day', 'Current day', this.state.day,['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],this.onDayChange.bind(this), true)}
     </Row>
     <Row>
-      <Input id='hour' s={6} label='Current hour' defaultValue={this.state.hour} onChange={this.onHourChange.bind(this)} />
+      {this.createSelect('hour', 'Current hour', this.state.hour,[8,9,10,11,12,13,14,15,16,17,18],this.onHourChange.bind(this), false)}
     </Row>
         <FieldComponent field_id='treatment_id' field_label='Algorithm' selected={this.bestAlgo()} options={this.getAlgorithmOptions(user_details)} handlerFunction={this.onAlgorithmChanged.bind(this)}/>
     </div>
@@ -129,9 +137,9 @@ export default class AlgorithmComponent extends React.Component {
   updateAlgorithmSelection(user_details) {
     // Inefficient, but clean
     if(user_details != undefined) {
+      console.log(user_details)
       let algo_f1 = user_details.reduce(function(prev, curr) { return prev.f1_score > curr.f1_score ? prev : curr; });
       let algo_acc = user_details.reduce(function(prev, curr) { return prev.accuracy > curr.accuracy ? prev : curr; });
-      console.log(algo_f1);
       this.setState({
         algo_f1: algo_f1.algorithm,
         algo_acc: algo_acc.algorithm
@@ -142,11 +150,14 @@ export default class AlgorithmComponent extends React.Component {
 
   render() {
     if (this.props.user_details === undefined) {
-     return(<div></div>);
+      return(<span></span>);
     }
     return (
       <div className="row">
         <div className="input-field col s12">
+          <Row>
+            <span>The daily goal of this participant is {this.props.user_details[0].threshold} steps</span>
+          </Row>
           <Row>
             <Input id='steps_total' s={6} label='Steps total' defaultValue={this.state.totalSteps} onChange={this.onTotalStepsChange.bind(this)} />
           </Row>
@@ -154,11 +165,16 @@ export default class AlgorithmComponent extends React.Component {
             <Input id='steps_hour' s={6} label='Steps in the last hour' defaultValue={this.state.lastHourSteps} onChange={this.onLastHourStepsChange.bind(this)} />
           </Row>
           <Row>
+            Select best algorithm based on
+          </Row>
+          <Row>
             <Input id='f1' name='group1' type='radio' value='f1' label='F1-score' checked={this.state.selectedOption === 'f1'} onChange={this.onOptionChange.bind(this)} />
             <Input id='acc' name='group1' type='radio' value='accuracy' label='Accuracy' checked={this.state.selectedOption === 'accuracy'} onChange={this.onOptionChange.bind(this)} />
           </Row>
           {this.state.showAdvanced ? this.renderAdvancedOptions(this.props.user_details) : null }
-          {this.createSubmit()}
+          <Row>
+            <Input type='submit' defaultValue='Predict' className='btn' onClick={this.submitField.bind(this)}/>
+          </Row>
           <a onClick={this.toggleAdvanced.bind(this)}>Advanced options </a>
         </div>
       </div>

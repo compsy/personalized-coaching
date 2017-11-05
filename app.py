@@ -10,9 +10,11 @@ from os.path import isfile, join
 import numpy as np
 import sklearn
 
-# import HashingVectorizer from local dir
-#from vectorizer import vect
+# Load the application
 app = Flask(__name__)
+
+# For this app it is fine to receive calls from other urls (this should
+# probably not be used in a real, production environment)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,7 +31,7 @@ def classify(algorithm,treatment_id,day,hour,steps_hour,steps_total):
     label = {0: 'negative', 1: 'positive'}
     try:
         # TODO: This is not safe.
-        clf = pickle.load(open(os.path.join(pickle_dir,str(treatment_id)+ '_'+algorithm+'_model.pkl'),'rb'))
+        clf = pickle.load(open(os.path.join(pickle_dir,str(treatment_id) + '_' + algorithm + '_model.pkl'),'rb'))
         X = (np.array([day,hour,steps_hour,steps_total]).reshape(-1, 4))
         X = X.astype(int)
         y = clf.predict(X)[0]
@@ -37,20 +39,15 @@ def classify(algorithm,treatment_id,day,hour,steps_hour,steps_total):
         return label[y], proba
 
     except (FileNotFoundError, ValueError, EOFError, UnpicklingError):
-        return 'no data found', 0
-
-def get_pickle_files():
-    return [(f[0:4], f[0:4]) for f in listdir(pickle_dir) if isfile(join(pickle_dir, f))]
+        return 'not found', 0
 
 @app.route('/')
 def index():
-    # return jsonify(treatment_id=get_pickle_files())
     return render_template('index.html')
 
 
 @app.route('/participants', methods=['GET'])
 def get_participants():
-    """docstring for get_participants"""
     particpant_ids = [p.hft_treatment_id for p in Metric.query.distinct('hft_treatment_id').all()]
     return jsonify(particpant_ids)
 
@@ -64,12 +61,11 @@ def details():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     data         = request.get_json()
-    treatment_id = data[ 'treatment_id' ]
-    # Remov the first char
-    hour         = data[ 'hour' ]
-    day          = data[ 'day' ]
-    steps_hour   = data[ 'steps_hour' ]
-    steps_total  = data[ 'steps_total' ]
+    treatment_id = int(data[ 'treatment_id' ])
+    hour         = int(data[ 'hour' ])
+    day          = int(data[ 'day' ])
+    steps_hour   = int(data[ 'steps_hour' ])
+    steps_total  = int(data[ 'steps_total' ])
     algo         = data[ 'algorithm' ]
     y, proba = classify(algo, treatment_id,day,hour,steps_hour,steps_total)
     return jsonify(treatment_id=treatment_id,

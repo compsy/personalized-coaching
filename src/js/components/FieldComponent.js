@@ -6,7 +6,8 @@ export default class FieldComponent extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      options: ['Loading...', 'test']
+      options: ['Loading...', 'test'],
+      selected: 'def'
     }
   }
 
@@ -16,23 +17,27 @@ export default class FieldComponent extends React.Component {
         <option key={option}>{option}</option>
       )
     })
+
     return(selectorOptions)
   }
 
   componentDidMount() {
+    let selected = this.props.selected === undefined ? 'def' : this.props.selected;
     this.setState({
       options: this.props.options,
-      selected: this.props.selected
+      selected: selected
     })
   }
 
   render() {
     let options = this.generateSelect(this.state.options);
+    options.unshift(<option key="def" value="def" disabled>Choose your option</option>)
+    console.log(this.state.selected);
     return (
       <Row>
         <Input type='select' 
                label={this.props.field_label} 
-               defaultValue={this.props.selected} 
+               defaultValue={this.state.selected} 
                onChange={this.props.handlerFunction}>
           {options}
         </Input>
