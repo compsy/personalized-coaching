@@ -42,28 +42,8 @@ def classify(algorithm,treatment_id,day,hour,steps_hour,steps_total):
 def get_pickle_files():
     return [(f[0:4], f[0:4]) for f in listdir(pickle_dir) if isfile(join(pickle_dir, f))]
 
-class DataForm(Form):
-    pickle_files = get_pickle_files()
-    # print(help(Metric.query))
-    pickle_files = [(p.hft_treatment_id, p.hft_treatment_id) for p in Metric.query.distinct('hft_treatment_id').all()]
-    treatment_id = SelectField("Treatmentid",
-                                choices = pickle_files,
-                                id = 'hft_treatment_id',
-                                validators = [validators.DataRequired(),
-                                validators.length(min=1)])
-    day = TextField("Day", [validators.DataRequired(),
-                            validators.length(min=1)])
-    hour = TextField("Hour", [validators.DataRequired(),
-                             validators.length(min=1)])
-    steps_hour =  TextField("Steps per hour", [validators.DataRequired(),
-                             validators.length(min=1)])
-    steps_total = TextField("Steps in total",
-                            [validators.DataRequired(),
-                             validators.length(min=1)])
-
 @app.route('/')
 def index():
-    # form = DataForm(request.form)
     # return jsonify(treatment_id=get_pickle_files())
     return render_template('index.html')
 
@@ -99,28 +79,6 @@ def calculate():
                             steps_total=steps_total,
                             prediction=y,
                             probability=round(proba*100, 2))
-
-@app.route('/results', methods=['POST'])
-def results():
-    form = DataForm(request.form)
-    if request.method == 'POST' and form.validate():
-        treatment_id = request.form['treatment_id']
-        # Remov the first char
-        # print(Metric.query.get(treatment_id[1:]))
-        print(Metric.query.filter_by(hft_treatment_id=int(treatment_id)).first())
-        day = request.form['day']
-        hour = request.form['hour']
-        steps_hour =request.form['steps_hour']
-        steps_total = request.form['steps_total']
-        y, proba = classify(treatment_id,day,hour,steps_hour,steps_total)
-        return jsonify(treatment_id=treatment_id,
-                                day=day,
-                                hour=hour,
-                                steps_last_hour=steps_hour,
-                                steps_total=steps_total,
-                                prediction=y,
-                                probability=round(proba*100, 2))
-    return render_template('testdata.html', form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)
