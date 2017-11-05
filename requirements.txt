@@ -7,7 +7,7 @@ flask_cors
 gunicorn
 wtforms
 numpy
-sklearn
+scikit-learn==0.18.1
 scipy
 psycopg2
 

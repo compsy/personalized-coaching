@@ -48376,17 +48376,19 @@ var AlgorithmComponent = function (_React$Component) {
   function AlgorithmComponent(props) {
     _classCallCheck(this, AlgorithmComponent);
 
+    // Bounded hours only
     var _this = _possibleConstructorReturn(this, (AlgorithmComponent.__proto__ || Object.getPrototypeOf(AlgorithmComponent)).call(this, props));
 
+    var start_hour = 8;
+    var end_hour = 18;
+
     var d = new Date();
-    var day = d.getDay();
-    var hour = d.getHours();
+    var hour = Math.min(Math.max(d.getHours(), start_hour), end_hour);
     _this.state = {
       selectedOption: 'f1',
       totalSteps: 1000,
       lastHourSteps: 100,
       showAdvanced: false,
-      day: day,
       hour: hour,
       algo_f1: undefined,
       algo_acc: undefined
@@ -48438,13 +48440,6 @@ var AlgorithmComponent = function (_React$Component) {
       });
     }
   }, {
-    key: 'onDayChange',
-    value: function onDayChange(e) {
-      this.setState({
-        day: e.target.value
-      });
-    }
-  }, {
     key: 'onHourChange',
     value: function onHourChange(e) {
       this.setState({
@@ -48458,7 +48453,6 @@ var AlgorithmComponent = function (_React$Component) {
 
       _axios2.default.post('http://hanze.compsy.nl' + '/calculate', {
         treatment_id: this.props.user_id,
-        day: this.state.day,
         hour: this.state.hour,
         steps_hour: this.state.lastHourSteps,
         steps_total: this.state.totalSteps,
@@ -48523,11 +48517,6 @@ var AlgorithmComponent = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(
-          _reactMaterialize.Row,
-          null,
-          this.createSelect('day', 'Current day', this.state.day, ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], this.onDayChange.bind(this), true)
-        ),
         _react2.default.createElement(
           _reactMaterialize.Row,
           null,

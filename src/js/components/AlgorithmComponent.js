@@ -7,15 +7,18 @@ import FieldComponent from './FieldComponent.js'
 export default class AlgorithmComponent extends React.Component {
   constructor(props) {
     super(props)
+
+    // Bounded hours only
+    const start_hour = 8;
+    const end_hour = 18;
+
     let d = new Date();
-    let day = d.getDay();
-    let hour = d.getHours();
+    let hour = Math.min(Math.max(d.getHours(),start_hour),end_hour); 
     this.state = {
       selectedOption: 'f1',
       totalSteps: 1000,
       lastHourSteps: 100,
       showAdvanced: false,
-      day: day,
       hour: hour,
       algo_f1: undefined,
       algo_acc: undefined
@@ -55,12 +58,6 @@ export default class AlgorithmComponent extends React.Component {
     });
   }
 
-  onDayChange(e) {
-    this.setState({
-      day: e.target.value
-    });
-  }
-
   onHourChange(e) {
     this.setState({
       hour: e.target.value
@@ -70,7 +67,6 @@ export default class AlgorithmComponent extends React.Component {
   submitField() {
     axios.post(__SITE_URL__ + '/calculate', {
       treatment_id: this.props.user_id,
-      day: this.state.day,
       hour: this.state.hour,
       steps_hour: this.state.lastHourSteps,
       steps_total: this.state.totalSteps,
@@ -123,9 +119,6 @@ export default class AlgorithmComponent extends React.Component {
   renderAdvancedOptions(user_details) {
     return(
       <div>
-    <Row>
-      {this.createSelect('day', 'Current day', this.state.day,['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],this.onDayChange.bind(this), true)}
-    </Row>
     <Row>
       {this.createSelect('hour', 'Current hour', this.state.hour,[8,9,10,11,12,13,14,15,16,17,18],this.onHourChange.bind(this), false)}
     </Row>

@@ -27,12 +27,14 @@ cur_dir = os.path.dirname(__file__)
 app.static_folder = 'static'
 pickle_dir = os.path.join(cur_dir,'pkl_objects')
 
-def classify(algorithm,treatment_id,day,hour,steps_hour,steps_total):
+def classify(algorithm,treatment_id,hour,steps_hour,steps_total):
     label = {0: 'negative', 1: 'positive'}
     try:
         # TODO: This is not safe.
-        clf = pickle.load(open(os.path.join(pickle_dir,str(treatment_id) + '_' + algorithm + '_model.pkl'),'rb'))
-        X = (np.array([day,hour,steps_hour,steps_total]).reshape(-1, 4))
+        file_name = os.path.join(pickle_dir,str(treatment_id) + '_' + algorithm + '_model.pkl')
+        clf = pickle.load(open(file_name, 'rb'))
+        # X = (np.array([day,hour,steps_hour,steps_total]).reshape(-1, 4))
+        X = (np.array([hour,steps_hour,steps_total]).reshape(-1, 3))
         X = X.astype(int)
         y = clf.predict(X)[0]
         proba = np.max(clf.predict_proba(X))
@@ -63,13 +65,11 @@ def calculate():
     data         = request.get_json()
     treatment_id = int(data[ 'treatment_id' ])
     hour         = int(data[ 'hour' ])
-    day          = int(data[ 'day' ])
     steps_hour   = int(data[ 'steps_hour' ])
     steps_total  = int(data[ 'steps_total' ])
     algo         = data[ 'algorithm' ]
-    y, proba = classify(algo, treatment_id,day,hour,steps_hour,steps_total)
+    y, proba = classify(algo, treatment_id,hour,steps_hour,steps_total)
     return jsonify(treatment_id=treatment_id,
-                            day=day,
                             hour=hour,
                             steps_last_hour=steps_hour,
                             steps_total=steps_total,
