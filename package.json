@@ -7,7 +7,8 @@
     "axios": "^0.17.0",
     "react": "15.6.2",
     "react-dom": "15.6.2",
-    "react-materialize": "^1.0.16"
+    "react-materialize": "^1.0.16",
+    "uglifyjs-webpack-plugin": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^8.0.47",
@@ -19,11 +20,13 @@
     "graceful-fs": "^4.1.11",
     "html-webpack-plugin": "^2.30.1",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^2.9.4",
+    "webpack-merge": "^4.1.1"
   },
   "scripts": {
-    "dev": "webpack-dev-server",
-    "build": "webpack"
+    "heroku-prebuild": "webpack --config webpack.prod.js",
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
