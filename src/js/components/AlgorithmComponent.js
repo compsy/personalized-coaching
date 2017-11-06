@@ -17,7 +17,7 @@ export default class AlgorithmComponent extends React.Component {
       selectedOption: 'f1',
       totalSteps: 1000,
       lastHourSteps: 100,
-      showAdvanced: true,
+      showAdvanced: false,
       hour: hour,
       selectedAlgo: undefined,
       algo_f1: undefined,
