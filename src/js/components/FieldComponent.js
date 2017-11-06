@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Input } from 'react-materialize';
+import { Col, Row, Input } from 'react-materialize';
 import { render } from 'react-dom';
 
 export default class FieldComponent extends React.Component {
@@ -43,12 +43,10 @@ export default class FieldComponent extends React.Component {
   render() {
     let options = this.generateSelect(this.state.options);
     return (
-      <Row>
-        <Input type='select' label={this.props.field_label} value={this.state.selected} 
-               onChange={this.props.handlerFunction}>
-          {options}
-        </Input>
-      </Row>
+      <Input s={12} type='select' label={this.props.field_label} value={this.state.selected} 
+              onChange={this.props.handlerFunction}>
+        {options}
+      </Input>
     )
   }
 }

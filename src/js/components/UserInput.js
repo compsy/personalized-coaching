@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { render } from 'react-dom';
-import { ProgressBar } from 'react-materialize';
+import { Col, Row, ProgressBar } from 'react-materialize';
 import FieldComponent from './FieldComponent.js'
 import AlgorithmComponent from './AlgorithmComponent.js'
 import ResultsComponent from './ResultsComponent.js'
@@ -44,16 +44,16 @@ export default class UserInput extends Component {
       return(<ProgressBar />)
     }
     return (
-      <div className='row'>
+      <Row>
         <p>Complete the form to receive an estimate whether or not the selected participant will reach his or her goal today.</p>
-        <div className='col s12 l6'>
+        <Col m={12} l={6}>
           <FieldComponent field_id='treatment_id' field_label='Treatment ID' selected={this.state.user_id} options={this.state.participants} handlerFunction={this.handleParticipantChanged.bind(this)}/>
           <AlgorithmComponent user_id={this.state.user_id} user_details={this.state.user_details} handleResultCalculated={this.handleResultCalculated.bind(this)}/>
-        </div>
-        <div className='col s12 l6'>
+        </Col>
+        <Col m={12} l={6}>
           <ResultsComponent results={this.state.results} />
-        </div>
-      </div>
+        </Col>
+      </Row>
     )
   }
 }
