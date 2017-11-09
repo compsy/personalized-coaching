@@ -12,7 +12,7 @@ export default class AlgorithmComponent extends React.Component {
     const end_hour = 10;
 
     let d = new Date();
-    let hour = Math.min(d.getHours(),end_hour); 
+    let hour = Math.min(d.getHours()-8,end_hour); 
     this.state = {
       selectedOption: 'f1',
       totalSteps: 1000,
@@ -65,6 +65,7 @@ export default class AlgorithmComponent extends React.Component {
   }
 
   getCurrentAlgorithm() {
+    console.log(this.state.selectedAlgo);
     if (this.state.selectedAlgo === undefined) {
       return(this.bestAlgo());
     }
@@ -149,13 +150,12 @@ export default class AlgorithmComponent extends React.Component {
       let algo_f1 = user_details.reduce(function(prev, curr) { return prev.f1_score > curr.f1_score ? prev : curr; });
       let algo_acc = user_details.reduce(function(prev, curr) { return prev.accuracy > curr.accuracy ? prev : curr; });
       this.setState({
-        selectedAlgo: this.bestAlgo(),
+        selectedAlgo: this.getCurrentAlgorithm(),
         algo_f1: algo_f1.algorithm,
         algo_acc: algo_acc.algorithm
       })
     }
   }
-
 
   render() {
     if (this.props.user_details === undefined) {
