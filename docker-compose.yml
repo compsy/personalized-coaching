@@ -1,0 +1,15 @@
+version: '3'
+services:
+  db:
+    image: postgres
+  web:
+    build: .
+    image: compsy/personalized-coaching
+    environment:
+      - DATABASE_URL=postgresql://personalizedcoaching_db:5432/personalized_coaching
+      - APP_SETTINGS="config.DevelopmentConfig"
+    ports:
+      - "80:5000"
+      - "5001:80"
+    depends_on:
+      - db
