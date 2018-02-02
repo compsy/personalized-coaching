@@ -4,14 +4,14 @@
   "description": "Instal reqs ``` pip install -r requirements.txt ```",
   "main": "App.js",
   "dependencies": {
-    "axios": "^0.17.0",
+    "axios": "^0.17.1",
     "react": "15.6.2",
     "react-dom": "15.6.2",
-    "react-materialize": "^1.0.16",
-    "uglifyjs-webpack-plugin": "^1.0.1"
+    "react-materialize": "^1.1.2",
+    "uglifyjs-webpack-plugin": "^1.1.8"
   },
   "devDependencies": {
-    "@types/node": "^8.0.47",
+    "@types/node": "^8.5.9",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
@@ -20,14 +20,14 @@
     "bower": "^1.8.2",
     "graceful-fs": "^4.1.11",
     "html-webpack-plugin": "^2.30.1",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1",
     "webpack-merge": "^4.1.1"
   },
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "postinstall": "webpack --config webpack.prod.js"
+    "postinstall": "echo building....; webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
