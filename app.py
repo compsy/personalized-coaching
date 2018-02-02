@@ -20,6 +20,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+from models import Metric
+
 ######## Preparing the Classifier
 cur_dir = os.path.dirname(__file__)
 app.static_folder = 'static'
