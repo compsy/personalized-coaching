@@ -7,7 +7,7 @@ module.exports = merge(common, {
   plugins: [
     new UglifyJSPlugin(),
     new webpack.DefinePlugin({
-      __SITE_URL__: "'http://hanze.compsy.nl'"
+      __SITE_URL__: "'http://personalized-coaching.compsy.nl'"
     }),
   ]
 });

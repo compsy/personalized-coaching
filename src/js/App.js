@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import { Container } from 'react-materialize';
+import { Container, Row } from 'react-materialize';
 import { render } from 'react-dom';
 import UserInput from './components/UserInput.js'
 
-export default class App extends React.Component{
+export default class App extends React.Component {
   render() {
     return (
       <Container>
+        <h1 className="header center teal-text text-lighten-2">Personalized coach</h1>
         <div className="section no-pad-bot">
-          <div className="container">
-            <h1 className="header center teal-text text-lighten-2">Personalized coach</h1>
-            <div className="row center">
+          <Container>
+          <Row>
               <h5 className="header col s12 light">A state of the art, machine learning based tool to <em>personalize</em> coaching.</h5>
-            </div>
-          </div>
+              </Row>
+          </Container>
         </div>
         <div className="section">
           <UserInput />

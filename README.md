@@ -51,3 +51,6 @@ heroku run python manage.py seed --app personalized-coaching
 ```
 
 all set!
+
+
+If you change the JS, be sure to run `npm run build` to build the new assets
