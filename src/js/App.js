@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row } from 'react-materialize';
+import { Container, Row, Section } from 'react-materialize';
 import { render } from 'react-dom';
 import UserInput from './components/UserInput.js'
 
@@ -12,13 +12,15 @@ export default class App extends React.Component {
         <div className="section no-pad-bot">
           <Container>
             <Row>
-              <h5 className="header col s12 light center flow-text">A state of the art, machine learning based tool to <em>personalize</em> coaching.</h5>
+              <h5 className="header col s12 light center flow-text">
+                A state of the art, machine learning based tool to <em>personalize</em> coaching.
+              </h5>
             </Row>
           </Container>
         </div>
-        <div className="section">
+        <Section>
           <UserInput />
-        </div>
+        </Section>
       </Container>
     );
   }

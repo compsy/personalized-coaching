@@ -27,7 +27,8 @@
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "postinstall": "echo building....; webpack --config webpack.prod.js"
+    "postinstall": "webpack --config webpack.prod.js",
+    "heroku-postbuild": "webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
